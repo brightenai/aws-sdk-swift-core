@@ -14,9 +14,14 @@
 
 // Replicating the CryptoKit framework interface for < macOS 10.15
 
-#if !os(Linux)
+#if !os(Linux) && !os(Android)
 
 import CommonCrypto
+#else
+import CryptoSwift
+import Foundation
+#endif
+
 import protocol Foundation.DataProtocol
 
 /// Hash Authentication Code returned by HMAC
@@ -27,8 +32,13 @@ public struct HashAuthenticationCode: ByteArray {
 /// Object generating HMAC for data block given a symmetric key
 public struct HMAC<H: CCHashFunction> {
     let key: SymmetricKey
+    
+    #if !os(Linux) && !os(Android)
     var context: CCHmacContext
-
+    #else
+    var context: Data
+    #endif
+    
     /// return authentication code for data block given a symmetric key
     public static func authenticationCode<D: DataProtocol>(for data: D, using key: SymmetricKey) -> HashAuthenticationCode {
         var hmac = HMAC(key: key)
@@ -49,32 +59,47 @@ public struct HMAC<H: CCHashFunction> {
             self.update(bufferPointer: .init(buffer))
         }
     }
-}
-
-extension HMAC {
+//}
+//
+//extension HMAC {
     /// initialize HMAC with symmetric key
     public init(key: SymmetricKey) {
         self.key = key
+        #if !os(Linux) && !os(Android)
         self.context = CCHmacContext()
+        #else
+        self.context = Data()
+        #endif
         self.initialize()
     }
 
     /// initialize HMAC calculation
     mutating func initialize() {
+        #if !os(Linux) && !os(Android)
         CCHmacInit(&self.context, H.algorithm, self.key.bytes, self.key.bytes.count)
+        #endif
     }
 
     /// update HMAC calculation with a buffer
     public mutating func update(bufferPointer: UnsafeRawBufferPointer) {
+        #if !os(Linux) && !os(Android)
         CCHmacUpdate(&self.context, bufferPointer.baseAddress, bufferPointer.count)
+        #endif
     }
 
     /// finalize HMAC calculation and return authentication code
     public mutating func finalize() -> HashAuthenticationCode {
+        #if !os(Linux) && !os(Android)
         var authenticationCode: [UInt8] = .init(repeating: 0, count: H.Digest.byteCount)
         CCHmacFinal(&self.context, &authenticationCode)
         return .init(bytes: authenticationCode)
+        #else
+        let hmac = CryptoSwift.HMAC(key:self.key.bytes, variant:CryptoSwift.HMAC.Variant.sha256)
+        return try! HashAuthenticationCode(bytes:hmac.authenticate( [UInt8] (self.context)))
+        #endif
+        
+        
     }
 }
 
-#endif
+//#endif

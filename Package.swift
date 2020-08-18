@@ -26,7 +26,11 @@ let package = Package(
         .package(url: "https://github.com/brightenai/swift-nio.git",.branch("master")),// .upToNextMajor(from: "2.16.1")),
         .package(url: "https://github.com/brightenai/swift-nio-ssl.git", .branch("master")),//.upToNextMajor(from: "2.7.2")),
         .package(url: "https://github.com/brightenai/swift-nio-transport-services.git",.branch("master")),// .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/brightenai/async-http-client.git", .branch("master"))// .upToNextMajor(from: "1.2.0")),
+        .package(url: "https://github.com/brightenai/async-http-client.git", .branch("master")),// .upToNextMajor(from: "1.2.0")),
+
+        .package(url: "https://github.com/brightenai/CryptoSwift.git", .branch("master"))// .upToNextMajor(from: "1.2.0")),
+
+        
     ],
     targets: [
         .target(name: "AWSSDKSwiftCore", dependencies: [
@@ -42,41 +46,41 @@ let package = Package(
             .product(name: "NIOTransportServices", package: "swift-nio-transport-services"),
             .product(name: "NIOFoundationCompat", package: "swift-nio"),
         ]),
-        .target(name: "AWSCrypto", dependencies: []),
+        .target(name: "AWSCrypto", dependencies: ["CryptoSwift"]),
         .target(name: "AWSSignerV4", dependencies: [
             .byName(name: "AWSCrypto"),
             .product(name: "NIOHTTP1", package: "swift-nio"),
         ]),
-        .target(name: "AWSTestUtils", dependencies: [
-            .byName(name: "AWSSDKSwiftCore"),
-            .product(name: "NIO", package: "swift-nio"),
-            .product(name: "NIOHTTP1", package: "swift-nio"),
-            .product(name: "NIOFoundationCompat", package: "swift-nio"),
-            .product(name: "NIOTestUtils", package: "swift-nio"),
-        ]),
+//        .target(name: "AWSTestUtils", dependencies: [
+//            .byName(name: "AWSSDKSwiftCore"),
+//            .product(name: "NIO", package: "swift-nio"),
+//            .product(name: "NIOHTTP1", package: "swift-nio"),
+//            .product(name: "NIOFoundationCompat", package: "swift-nio"),
+//            .product(name: "NIOTestUtils", package: "swift-nio"),
+//        ]),
         .target(name: "AWSXML", dependencies: [
             .byName(name: "CAWSExpat"),
         ]),
         .target(name: "CAWSExpat", dependencies: []),
         .target(name: "INIParser", dependencies: []),
 
-        .testTarget(name: "AWSCryptoTests", dependencies: [
-            .byName(name: "AWSCrypto"),
-        ]),
-        .testTarget(name: "AWSSDKSwiftCoreTests", dependencies: [
-            .byName(name: "AWSSDKSwiftCore"),
-            .byName(name: "AWSTestUtils"),
-        ]),
-        .testTarget(name: "AWSSignerTests", dependencies: [
-            .byName(name: "AWSSignerV4"),
-        ]),
-        .testTarget(name: "AWSXMLTests", dependencies: [
-            .byName(name: "AWSXML"),
-            .byName(name: "AWSSDKSwiftCore"),
-        ]),
-        .testTarget(name: "INIParserTests", dependencies: [
-            .byName(name: "INIParser"),
-        ]),
+//        .testTarget(name: "AWSCryptoTests", dependencies: [
+//            .byName(name: "AWSCrypto"),
+//        ]),
+//        .testTarget(name: "AWSSDKSwiftCoreTests", dependencies: [
+//            .byName(name: "AWSSDKSwiftCore"),
+//            .byName(name: "AWSTestUtils"),
+//        ]),
+//        .testTarget(name: "AWSSignerTests", dependencies: [
+//            .byName(name: "AWSSignerV4"),
+//        ]),
+//        .testTarget(name: "AWSXMLTests", dependencies: [
+//            .byName(name: "AWSXML"),
+//            .byName(name: "AWSSDKSwiftCore"),
+//        ]),
+//        .testTarget(name: "INIParserTests", dependencies: [
+//            .byName(name: "INIParser"),
+//        ]),
     ]
 )
 

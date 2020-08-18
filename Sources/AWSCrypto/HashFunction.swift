@@ -14,15 +14,23 @@
 
 // Replicating the CryptoKit framework interface for < macOS 10.15
 
-#if !os(Linux)
+//#if !os(Linux) && !os(Android)
 
+#if !os(Linux) && !os(Android)
 import CommonCrypto
+#endif
+
 import protocol Foundation.DataProtocol
 
 /// Protocol for Hashing function
 public protocol HashFunction {
     /// associated digest object
+    
+    #if !os(Linux) && !os(Android)
     associatedtype Digest: AWSCrypto.Digest
+    #else
+    associatedtype Digest = SHA256Digest
+    #endif
 
     /// hash raw buffer
     static func hash(bufferPointer: UnsafeRawBufferPointer) -> Self.Digest
@@ -75,7 +83,9 @@ extension HashFunction {
 
 /// public protocol for Common Crypto hash functions
 public protocol CCHashFunction: HashFunction {
+    #if !os(Linux) && !os(Android)
     static var algorithm: CCHmacAlgorithm { get }
+    #endif
 }
 
-#endif
+//#endif

@@ -16,8 +16,9 @@ import AWSSignerV4
 import INIParser
 import Logging
 import NIO
-#if os(Linux)
+#if os(Linux) || os(Android)
 import Glibc
+import Foundation
 #else
 import Foundation.NSString
 #endif
@@ -112,27 +113,34 @@ struct AWSConfigFileCredentialProvider: CredentialProvider {
         return StaticCredential(accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, sessionToken: sessionToken)
     }
 
+    #if os(Linux) || os(Android)
+    static func expandingTildeInPath2(_ path: String) -> String {
+        return path.replacingOccurrences(of: "~", with: FileManager.default.homeDirectoryForCurrentUser.path)
+    }
+    #endif
+    
     static func expandTildeInFilePath(_ filePath: String) -> String {
-        #if os(Linux)
+        #if os(Linux) || os(Android)
+        return expandingTildeInPath2(filePath)
         // We don't want to add more dependencies on Foundation than needed.
         // For this reason we get the expanded filePath on Linux from libc.
         // Since `wordexp` and `wordfree` are not available on iOS we stay
         // with NSString on Darwin.
-        return filePath.withCString { (ptr) -> String in
-            var wexp = wordexp_t()
-            guard wordexp(ptr, &wexp, 0) == 0, let we_wordv = wexp.we_wordv else {
-                return filePath
-            }
-            defer {
-                wordfree(&wexp)
-            }
-
-            guard let resolved = we_wordv[0], let pth = String(cString: resolved, encoding: .utf8) else {
-                return filePath
-            }
-
-            return pth
-        }
+//        return filePath.withCString { (ptr) -> String in
+//            var wexp = wordexp_t()
+//            guard wordexp(ptr, &wexp, 0) == 0, let we_wordv = wexp.we_wordv else {
+//                return filePath
+//            }
+//            defer {
+//                wordfree(&wexp)
+//            }
+//
+//            guard let resolved = we_wordv[0], let pth = String(cString: resolved, encoding: .utf8) else {
+//                return filePath
+//            }
+//
+//            return pth
+//        }
         #else
         return NSString(string: filePath).expandingTildeInPath
         #endif

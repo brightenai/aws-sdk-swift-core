@@ -34,6 +34,8 @@
 #define Expat_INCLUDED 1
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "expat_external.h"
 
 #ifdef __cplusplus

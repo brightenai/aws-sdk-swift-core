@@ -14,7 +14,7 @@
 
 // Replicating the CryptoKit framework interface for < macOS 10.15
 
-#if !os(Linux)
+#if !os(Linux) && !os(Android)
 
 import CommonCrypto
 
