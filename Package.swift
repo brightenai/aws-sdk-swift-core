@@ -21,7 +21,7 @@ let package = Package(
         .library(name: "AWSSDKSwiftCore", targets: ["AWSSDKSwiftCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/brightenai/swift-log.git", from: "1.4.0"),
+        .package(url: "https://github.com/brightenai/swift-log.git", .branch("master")),//from: "1.4.0"),
         .package(url: "https://github.com/brightenai/swift-metrics.git", "1.0.0"..<"3.0.0"),
         .package(url: "https://github.com/brightenai/swift-nio.git",.branch("master")),// .upToNextMajor(from: "2.16.1")),
         .package(url: "https://github.com/brightenai/swift-nio-ssl.git", .branch("master")),//.upToNextMajor(from: "2.7.2")),
