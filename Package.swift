@@ -22,7 +22,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/brightenai/swift-log.git", from: "1.4.0"),
-        .package(url: "https://github.com/apple/swift-metrics.git", "1.0.0"..<"3.0.0"),
+        .package(url: "https://github.com/brightenai/swift-metrics.git", "1.0.0"..<"3.0.0"),
         .package(url: "https://github.com/brightenai/swift-nio.git",.branch("master")),// .upToNextMajor(from: "2.16.1")),
         .package(url: "https://github.com/brightenai/swift-nio-ssl.git", .branch("master")),//.upToNextMajor(from: "2.7.2")),
         .package(url: "https://github.com/brightenai/swift-nio-transport-services.git",.branch("master")),// .upToNextMajor(from: "1.0.0")),
