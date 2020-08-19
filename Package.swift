@@ -18,7 +18,7 @@ import PackageDescription
 let package = Package(
     name: "aws-sdk-swift-core",
     products: [
-        .library(name: "AWSSDKSwiftCore", type:.dynamic, targets: ["AWSSDKSwiftCore"]),
+        .library(name: "AWSSDKSwiftCore", targets: ["AWSSDKSwiftCore"]),
     ],
     dependencies: [
         .package(url: "https://github.com/brightenai/swift-log.git", .branch("master")),//from: "1.4.0"),
