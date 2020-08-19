@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 //===----------------------------------------------------------------------===//
 //
 // This source file is part of the AWSSDKSwift open source project
@@ -27,10 +27,7 @@ let package = Package(
         .package(url: "https://github.com/brightenai/swift-nio-ssl.git", .branch("master")),//.upToNextMajor(from: "2.7.2")),
         .package(url: "https://github.com/brightenai/swift-nio-transport-services.git",.branch("master")),// .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/brightenai/async-http-client.git", .branch("master")),// .upToNextMajor(from: "1.2.0")),
-
         .package(url: "https://github.com/brightenai/CryptoSwift.git", .branch("master"))// .upToNextMajor(from: "1.2.0")),
-
-        
     ],
     targets: [
         .target(name: "AWSSDKSwiftCore", dependencies: [
@@ -61,7 +58,14 @@ let package = Package(
         .target(name: "AWSXML", dependencies: [
             .byName(name: "CAWSExpat"),
         ]),
-        .target(name: "CAWSExpat", dependencies: []),
+        .target(name: "CAWSExpat", dependencies: [],
+                exclude:[
+                    "CAWSExpat/libexpat.def",
+                    "CAWSExpat/Makefile.am",
+                    "CAWSExpat/libexpatw.def",
+                    "CAWSExpat/COPYING",
+                    "CAWSExpat/AUTHORS",
+                ]),
         .target(name: "INIParser", dependencies: []),
 
 //        .testTarget(name: "AWSCryptoTests", dependencies: [
