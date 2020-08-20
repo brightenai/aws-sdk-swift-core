@@ -32,7 +32,8 @@ let package = Package(
         .package(url: "https://github.com/brightenai/swift-nio-ssl.git", .branch("master")),//.upToNextMajor(from: "2.7.2")),
         .package(url: "https://github.com/brightenai/swift-nio-transport-services.git",.branch("master")),// .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/brightenai/async-http-client.git", .branch("master")),// .upToNextMajor(from: "1.2.0")),
-        .package(url: "https://github.com/brightenai/CryptoSwift.git", .branch("master"))// .upToNextMajor(from: "1.2.0")),
+        .package(url: "https://github.com/brightenai/CryptoSwift.git", .branch("master")),// .upToNextMajor(from: "1.2.0")),
+        .package(url: "https://github.com/brightenai/swift-crypto.git", .branch("master"))
     ],
     targets: [
         .target(name: "AWSSDKSwiftCore", dependencies: [
@@ -48,7 +49,7 @@ let package = Package(
             .product(name: "NIOTransportServices", package: "swift-nio-transport-services"),
             .product(name: "NIOFoundationCompat", package: "swift-nio"),
         ]),
-        .target(name: "AWSCrypto", dependencies: ["CryptoSwift"]),
+        .target(name: "AWSCrypto", dependencies: ["CryptoSwift",.product(name: "Crypto", package: "swift-crypto")]),
         .target(name: "AWSSignerV4", dependencies: [
             .byName(name: "AWSCrypto"),
             .product(name: "NIOHTTP1", package: "swift-nio"),
@@ -102,6 +103,6 @@ let useSwiftCrypto = true
 
 // Use Swift cypto on Linux.
 //if useSwiftCrypto {
-    package.dependencies.append(.package(url: "https://github.com/apple/swift-crypto.git", from: "1.0.0"))
-    package.targets.first { $0.name == "AWSCrypto" }?.dependencies.append(.product(name: "Crypto", package: "swift-crypto"))
+//    package.dependencies.append(.package(url: "https://github.com/apple/swift-crypto.git", from: "1.0.0"))
+//    package.targets.first { $0.name == "AWSCrypto" }?.dependencies.append(.product(name: "Crypto", package: "swift-crypto"))
 //}
