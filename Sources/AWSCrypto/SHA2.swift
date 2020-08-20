@@ -18,7 +18,7 @@
 import CryptoSwift
 import Foundation
 
-public struct SHA256Digest_DROID : AWSCrypto.Digest, ByteDigest
+public struct SHA256Digest : AWSCrypto.Digest, ByteDigest
 {
     public static var byteCount = SHA2.Variant.sha256.digestLength
     public var bytes: [UInt8]
@@ -29,31 +29,31 @@ public struct SHA256Digest_DROID : AWSCrypto.Digest, ByteDigest
     }
 }
 
-public struct SHA256_DROID : CCHashFunction
+public struct SHA256 : CCHashFunction
 {
-    public typealias Digest = SHA256Digest_DROID
+    public typealias Digest = SHA256Digest
 
     var digest = CryptoSwift.SHA2(variant: .sha256)
 
-    public static func hash(bufferPointer: UnsafeRawBufferPointer) -> SHA256Digest_DROID {
+    public static func hash(bufferPointer: UnsafeRawBufferPointer) -> SHA256Digest {
         
         let data = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
-        return SHA256_DROID(bytes: data).hash2()
+        return SHA256(bytes: data).hash2()
     }
 
-    public static func hash(data: [UInt8]) -> SHA256Digest_DROID {
+    public static func hash(data: [UInt8]) -> SHA256Digest {
         
         let d2 = Data(bytes: data, count: data.count)
-        return SHA256_DROID(bytes: d2).hash2()
+        return SHA256(bytes: d2).hash2()
     }
 
-    func hash2() -> SHA256Digest_DROID
+    func hash2() -> SHA256Digest
     {
         //let hash = bytes.sha256()
         var digest = self.digest
         let hash = try! digest.finish()
 
-        return SHA256Digest_DROID(bytes:[UInt8](hash))
+        return SHA256Digest(bytes:[UInt8](hash))
     }
     
     public init(bytes: Data)
@@ -73,7 +73,7 @@ public struct SHA256_DROID : CCHashFunction
         let _ =  try! digest.update(withBytes: [UInt8](bytes))
     }
 
-    public mutating func finalize() -> SHA256Digest_DROID
+    public mutating func finalize() -> SHA256Digest
     {
         return hash2()
     }
