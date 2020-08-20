@@ -13,74 +13,74 @@
 //===----------------------------------------------------------------------===//
 
 // Replicating the CryptoKit framework interface for < macOS 10.15
-
-#if os(Android)
-import CryptoSwift
-import Foundation
-
-public struct SHA256Digest : AWSCrypto.Digest, ByteDigest
-{
-    public static var byteCount = SHA2.Variant.sha256.digestLength
-    public var bytes: [UInt8]
-    
-    init( bytes:Array<UInt8>)
-    {
-        self.bytes = bytes
-    }
-}
-
-public struct SHA256 : CCHashFunction
-{
-    public typealias Digest = SHA256Digest
-
-    var digest = CryptoSwift.SHA2(variant: .sha256)
-
-    public static func hash(bufferPointer: UnsafeRawBufferPointer) -> SHA256Digest {
-        
-        let data = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
-        return SHA256(bytes: data).hash2()
-    }
-
-    public static func hash(data: [UInt8]) -> SHA256Digest {
-        
-        let d2 = Data(bytes: data, count: data.count)
-        return SHA256(bytes: d2).hash2()
-    }
-
-    func hash2() -> SHA256Digest
-    {
-        //let hash = bytes.sha256()
-        var digest = self.digest
-        let hash = try! digest.finish()
-
-        return SHA256Digest(bytes:[UInt8](hash))
-    }
-    
-    public init(bytes: Data)
-    {
-         let _ = try! digest.update(withBytes: [UInt8](bytes))
-
-    }
-    
-    public init() {
-
-    }
-
-    public mutating func update(bufferPointer: UnsafeRawBufferPointer) {
-        
-        let bytes = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
-
-        let _ =  try! digest.update(withBytes: [UInt8](bytes))
-    }
-
-    public mutating func finalize() -> SHA256Digest
-    {
-        return hash2()
-    }
-}
-
-#endif
-#if !os(Linux) && !os(Android)
+//
+//#if os(Android)
+//import CryptoSwift
+//import Foundation
+//
+//public struct SHA256Digest : AWSCrypto.Digest, ByteDigest
+//{
+//    public static var byteCount = SHA2.Variant.sha256.digestLength
+//    public var bytes: [UInt8]
+//
+//    init( bytes:Array<UInt8>)
+//    {
+//        self.bytes = bytes
+//    }
+//}
+//
+//public struct SHA256 : CCHashFunction
+//{
+//    public typealias Digest = SHA256Digest
+//
+//    var digest = CryptoSwift.SHA2(variant: .sha256)
+//
+//    public static func hash(bufferPointer: UnsafeRawBufferPointer) -> SHA256Digest {
+//
+//        let data = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
+//        return SHA256(bytes: data).hash2()
+//    }
+//
+//    public static func hash(data: [UInt8]) -> SHA256Digest {
+//
+//        let d2 = Data(bytes: data, count: data.count)
+//        return SHA256(bytes: d2).hash2()
+//    }
+//
+//    func hash2() -> SHA256Digest
+//    {
+//        //let hash = bytes.sha256()
+//        var digest = self.digest
+//        let hash = try! digest.finish()
+//
+//        return SHA256Digest(bytes:[UInt8](hash))
+//    }
+//
+//    public init(bytes: Data)
+//    {
+//         let _ = try! digest.update(withBytes: [UInt8](bytes))
+//
+//    }
+//
+//    public init() {
+//
+//    }
+//
+//    public mutating func update(bufferPointer: UnsafeRawBufferPointer) {
+//
+//        let bytes = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
+//
+//        let _ =  try! digest.update(withBytes: [UInt8](bytes))
+//    }
+//
+//    public mutating func finalize() -> SHA256Digest
+//    {
+//        return hash2()
+//    }
+//}
+//
+//#endif
+//#if !os(Linux) && !os(Android)
 
 import CommonCrypto
 
@@ -179,4 +179,4 @@ public struct SHA512: CCHashFunction {
     }
 }
 
-#endif
+//#endif

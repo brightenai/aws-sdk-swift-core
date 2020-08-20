@@ -17,6 +17,11 @@ import PackageDescription
 
 let package = Package(
     name: "aws-sdk-swift-core",
+    platforms: [
+           .macOS(.v10_15),
+            .iOS(.v13),
+       ],
+    
     products: [
         .library(name: "AWSSDKSwiftCore", targets: ["AWSSDKSwiftCore"]),
     ],
@@ -89,14 +94,14 @@ let package = Package(
 )
 
 // switch for whether to use swift crypto. Swift crypto requires macOS10.15 or iOS13.I'd rather not pass this requirement on
-#if os(Linux)
+//#if os(Linux)
 let useSwiftCrypto = true
-#else
-let useSwiftCrypto = false
-#endif
+//#else
+//let useSwiftCrypto = false
+//#endif
 
 // Use Swift cypto on Linux.
-if useSwiftCrypto {
+//if useSwiftCrypto {
     package.dependencies.append(.package(url: "https://github.com/apple/swift-crypto.git", from: "1.0.0"))
     package.targets.first { $0.name == "AWSCrypto" }?.dependencies.append(.product(name: "Crypto", package: "swift-crypto"))
-}
+//}

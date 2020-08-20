@@ -14,13 +14,13 @@
 
 // Replicating the CryptoKit framework interface for < macOS 10.15
 
-#if !os(Linux) && !os(Android)
-
+//#if !os(Linux) && !os(Android)
+//
 import CommonCrypto
-#else
-import CryptoSwift
-import Foundation
-#endif
+//#else
+//import CryptoSwift
+//import Foundation
+//#endif
 
 import protocol Foundation.DataProtocol
 
