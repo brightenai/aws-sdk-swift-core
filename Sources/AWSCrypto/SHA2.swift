@@ -18,7 +18,7 @@
 import CryptoSwift
 import Foundation
 
-public struct SHA256Digest : AWSCrypto.Digest, ByteDigest
+public struct SHA256Digest_DROID : AWSCrypto.Digest, ByteDigest
 {
     public static var byteCount = SHA2.Variant.sha256.digestLength
     public var bytes: [UInt8]
@@ -29,47 +29,51 @@ public struct SHA256Digest : AWSCrypto.Digest, ByteDigest
     }
 }
 
-public struct SHA256 : CCHashFunction
+public struct SHA256_DROID : CCHashFunction
 {
-    public typealias Digest = SHA256Digest
+    public typealias Digest = SHA256Digest_DROID
 
-    var bytes:Data
-    
-    public static func hash(bufferPointer: UnsafeRawBufferPointer) -> SHA256Digest {
+    var digest = CryptoSwift.SHA2(variant: .sha256)
+
+    public static func hash(bufferPointer: UnsafeRawBufferPointer) -> SHA256Digest_DROID {
         
         let data = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
-        return SHA256(bytes: data).hash2()
+        return SHA256_DROID(bytes: data).hash2()
     }
 
-    public static func hash(data: [UInt8]) -> SHA256Digest {
+    public static func hash(data: [UInt8]) -> SHA256Digest_DROID {
         
         let d2 = Data(bytes: data, count: data.count)
-        return SHA256(bytes: d2).hash2()
+        return SHA256_DROID(bytes: d2).hash2()
     }
 
-    func hash2() -> SHA256Digest
+    func hash2() -> SHA256Digest_DROID
     {
-        let hash = bytes.sha256()
-        return SHA256Digest(bytes:[UInt8](hash))
+        //let hash = bytes.sha256()
+        var digest = self.digest
+        let hash = try! digest.finish()
+
+        return SHA256Digest_DROID(bytes:[UInt8](hash))
     }
     
     public init(bytes: Data)
     {
-        self.bytes = bytes
+         let _ = try! digest.update(withBytes: [UInt8](bytes))
+
     }
     
     public init() {
-        self.bytes = Data()
+
     }
 
     public mutating func update(bufferPointer: UnsafeRawBufferPointer) {
         
-        let data = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
+        let bytes = Data(bytes:bufferPointer.baseAddress!, count:bufferPointer.count)
 
-        self.bytes.append(data)
+        let _ =  try! digest.update(withBytes: [UInt8](bytes))
     }
 
-    public mutating func finalize() -> SHA256Digest
+    public mutating func finalize() -> SHA256Digest_DROID
     {
         return hash2()
     }
