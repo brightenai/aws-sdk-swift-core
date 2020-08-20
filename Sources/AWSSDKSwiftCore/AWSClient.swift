@@ -27,7 +27,7 @@ import NIO
 import NIOConcurrencyHelpers
 import NIOHTTP1
 import NIOTransportServices
-
+import Foundation
 /// This is the workhorse of aws-sdk-swift-core. You provide it with a `AWSShape` Input object, it converts it to `AWSRequest` which is then converted
 /// to a raw `HTTPClient` Request. This is then sent to AWS. When the response from AWS is received if it is successful it is converted to a `AWSResponse`
 /// which is then decoded to generate a `AWSShape` Output object. If it is not successful then `AWSClient` will throw an `AWSErrorType`.
@@ -223,6 +223,10 @@ extension AWSClient {
 
     /// invoke HTTP request
     fileprivate func invoke(_ httpRequest: AWSHTTPRequest, with serviceConfig: AWSServiceConfig, on eventLoop: EventLoop, logger: Logger) -> EventLoopFuture<AWSHTTPResponse> {
+        
+        NSLog("invoke httpRequest \(httpRequest)")
+        NSLog("invoke serviceConfig \(serviceConfig)")
+        
         return invoke(with: serviceConfig, logger: logger) {
             return self.httpClient.execute(request: httpRequest, timeout: serviceConfig.timeout, on: eventLoop, logger: logger)
         }
