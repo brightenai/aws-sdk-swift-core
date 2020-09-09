@@ -224,8 +224,8 @@ extension AWSClient {
     /// invoke HTTP request
     fileprivate func invoke(_ httpRequest: AWSHTTPRequest, with serviceConfig: AWSServiceConfig, on eventLoop: EventLoop, logger: Logger) -> EventLoopFuture<AWSHTTPResponse> {
         
-        NSLog("invoke httpRequest \(httpRequest)")
-        NSLog("invoke serviceConfig \(serviceConfig)")
+//        NSLog("invoke httpRequest \(httpRequest)")
+//        NSLog("invoke serviceConfig \(serviceConfig)")
         
         return invoke(with: serviceConfig, logger: logger) {
             return self.httpClient.execute(request: httpRequest, timeout: serviceConfig.timeout, on: eventLoop, logger: logger)
