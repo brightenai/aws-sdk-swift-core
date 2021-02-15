@@ -23,7 +23,7 @@ let package = Package(
        ],
     
     products: [
-        .library(name: "AWSSDKSwiftCore",type:.dynamic, targets: ["AWSSDKSwiftCore"]),
+        .library(name: "AWSSDKSwiftCore", targets: ["AWSSDKSwiftCore"]),
     ],
     dependencies: [
         .package(url: "https://github.com/brightenai/swift-log.git", .branch("master")),//from: "1.4.0"),
