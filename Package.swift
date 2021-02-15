@@ -48,7 +48,11 @@ let package = Package(
             .product(name: "NIOSSL", package: "swift-nio-ssl"),
             .product(name: "NIOTransportServices", package: "swift-nio-transport-services"),
             .product(name: "NIOFoundationCompat", package: "swift-nio"),
-        ]),
+        ]
+        linkerSettings: [
+            .unsafeFlags([ "-Xlinker","-S"])
+                         ]
+        ),
         .target(name: "AWSCrypto", dependencies: [.product(name: "Crypto", package: "swift-crypto")]),
         .target(name: "AWSSignerV4", dependencies: [
             .byName(name: "AWSCrypto"),
