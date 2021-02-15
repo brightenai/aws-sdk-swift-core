@@ -48,7 +48,7 @@ let package = Package(
             .product(name: "NIOSSL", package: "swift-nio-ssl"),
             .product(name: "NIOTransportServices", package: "swift-nio-transport-services"),
             .product(name: "NIOFoundationCompat", package: "swift-nio"),
-        ]
+        ],
         linkerSettings: [
             .unsafeFlags([ "-Xlinker","-S"])
                          ]
